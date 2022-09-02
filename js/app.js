@@ -13,8 +13,8 @@ const displayButtons = (buttons) => {
     const searchDiv = document.createElement("div");
     searchDiv.classList.add("w-50");
     const text = `
-        <h1>id : ${button.category_id}</h1>
-        <button onclick="loadNews(${button.category_id})" class="btn btn-secondary mt-5">${button.category_name}</button>
+       
+        <button onclick="loadNews(${button.category_id})" class="btn btn-outline-secondary mt-5">${button.category_name}</button>
     `;
     searchDiv.innerHTML = text;
     searchBtn.appendChild(searchDiv);
@@ -26,30 +26,37 @@ const loadNews = async (id) => {
   const url = `https://openapi.programming-hero.com/api/news/category/0${id}`;
   const res = await fetch(url);
   const data = await res.json();
-  displayNews(data.data)
+  displayNews(data.data);
 };
 
-const displayNews = news => {
-    console.log(news)
-    const newsContainer = document.getElementById('news-container')
-    newsContainer.innerHTML= ""
-    news.forEach(newses => {
-        const newsDiv = document.createElement('div')
-        newsDiv.classList.add('col')
-        newsDiv.innerHTML = `
+const displayNews = (news) => {
+  console.log(news);
+  const newsContainer = document.getElementById("news-container");
+  newsContainer.innerHTML = "";
+  news.forEach((newses) => {
+    const newsDiv = document.createElement("div");
+    newsDiv.classList.add("col");
+    newsDiv.innerHTML = `
         <div class="card">
         <img src="${newses.image_url}" class="card-img-top" alt="...">
         <div class="card-body">
             <h5 class="card-title">${newses.title}</h5>
-            <p class="card-text">${newses.details.slice(0, 100)}</p>
+            <p class="card-text">${
+              newses.details.length > 100
+                ? newses.details.slice(0, 150) + "..."
+                : details
+            }</p>
             <div class="d-flex">
-            <img class="rounded-circle me-4" src="${newses.thumbnail_url}" alt="" width="30" height="30">
+            <img class="rounded-circle me-4" src="${
+              newses.thumbnail_url
+            }" alt="" width="30" height="30">
+            <p class="me-4">${newses.author.name}</p>
             <p>Total View :${newses.total_view}<p>
             </div>
 
         </div>
     </div>
-        `
-        newsContainer.appendChild(newsDiv)
-    })
-}
+        `;
+    newsContainer.appendChild(newsDiv);
+  });
+};
