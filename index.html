@@ -11,8 +11,24 @@
 
 <body>
     <header>
-        <h1>All news</h1>
+
+        <!-- navbar  -->
+        <nav class="navbar bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand text-primary fw-bold">Top Notch News</a>
+                <form class="d-flex" role="search">
+                    <a class="nav-link active  m-4 text-primary" aria-current="page" href="#">News</a>
+                    <a class="nav-link active m-4 " aria-current="page" href="#">Blog</a>
+                </form>
+            </div>
+        </nav>
     </header>
+
+    <main>
+        <section class="container">
+            <button onclick="loadNews()" class="btn btn-secondary mt-5">Breaking News</button>
+        </section>
+    </main>
 
 
 
