@@ -1,13 +1,11 @@
-let buttons=[]
+let buttons = [];
 
 const loadButtons = async () => {
   const url = `https://openapi.programming-hero.com/api/news/categories`;
   try {
-    
     const res = await fetch(url);
     const data = await res.json();
-    // console.log(data);
-    buttons=data.data.news_category
+    buttons = data.data.news_category;
     displayButtons(data.data.news_category);
   } catch (error) {
     console.log(error);
@@ -15,29 +13,23 @@ const loadButtons = async () => {
 };
 
 const displayButtons = (buttons) => {
-  // console.log(buttons);
   buttons.forEach((button) => {
-    // console.log(button);
     const searchBtn = document.getElementById("search-btn");
     const searchDiv = document.createElement("div");
     searchDiv.classList.add("w-50");
     const text = `
         <button onclick="loadNews(${button.category_id})" class=" btn btn-outline-secondary mt-5">${button.category_name}</button> 
     `;
-
     searchDiv.innerHTML = text;
     searchBtn.appendChild(searchDiv);
   });
 };
 loadButtons();
 
-const searchName=(id)=>{
-// console.log(id,buttons);
-const name=buttons.find(button =>button.category_id==id)
-return name.category_name
-// console.log(name);
-
-}
+const searchName = (id) => {
+  const name = buttons.find((button) => button.category_id == id);
+  return name.category_name;
+};
 
 const toggoleSpinner = (isLoading) => {
   const loaderSection = document.getElementById("loader");
@@ -50,43 +42,41 @@ const toggoleSpinner = (isLoading) => {
 
 const loadNews = async (id) => {
   toggoleSpinner(true);
-  const name=searchName(id)
-  // console.log(name);
-  
+  const name = searchName(id);
+
   const url = `https://openapi.programming-hero.com/api/news/category/0${id}`;
   try {
     const res = await fetch(url);
     const data = await res.json();
-    displayNews(data.data,name);
+    displayNews(data.data, name);
   } catch (error) {
     console.log(error);
   }
 };
 
-const displayNews = (news,name) => {
- 
+const displayNews = (news, name) => {
   console.log(name);
-    news.sort((a, b) => {
+  news
+    .sort((a, b) => {
       return a.total_view - b.total_view;
-    }).reverse()
-  
+    })
+    .reverse();
+
   const newsNumber = document.getElementById("news-number");
 
-  // console.log(news.length);
   const newsContainer = document.getElementById("news-container");
   newsContainer.innerHTML = "";
 
   if (news.length === 0) {
     newsNumber.innerHTML = `
-    <h3 class="text-warning text-center">No news Found.Please try a new One.</h3>
+    <h3 class="text-warning fw-bold text-center">No news Found!! Please try a new One.</h3>
     `;
   } else {
     newsNumber.innerHTML = `
-    <h3 class="text-success text-center">${news.length} items found for category ${name}</h3>
+    <h3 class="text-success text-white mb-5 bg-secondary p-2">${news.length} items found for category ${name}</h3>
     `;
   }
   news.forEach((newses) => {
-    // console.log(newses);
     const newsDiv = document.createElement("div");
     newsDiv.classList.add("col");
     newsDiv.innerHTML = `
@@ -136,7 +126,6 @@ const loadNewsDetails = async (id) => {
 };
 
 const displayNewsDetails = (details) => {
-  // console.log(details);
   const modalTitle = document.getElementById("exampleModalLabel");
   modalTitle.innerText = details.title;
   const detailImg = document.getElementById("detail-img");
