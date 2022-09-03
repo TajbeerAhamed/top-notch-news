@@ -138,5 +138,6 @@ const displayNewsDetails = (details) => {
   <h6 class="text-center">Total View :${
     details.total_view ? details.total_view : "No data found"
   }<h6>
+  <p>${details.details}</p>
   `;
 };
