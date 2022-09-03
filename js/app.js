@@ -5,6 +5,15 @@ const loadButtons = async () => {
   displayButtons(data.data.news_category);
 };
 
+const toggoleSpinner = (isLoading) => {
+  const loaderSection = document.getElementById("loader");
+  if (isLoading) {
+    loaderSection.classList.remove("d-none");
+  } else {
+    loaderSection.classList.add("d-none");
+  }
+};
+
 const displayButtons = (buttons) => {
   // console.log(buttons)
   buttons.forEach((button) => {
@@ -13,9 +22,9 @@ const displayButtons = (buttons) => {
     const searchDiv = document.createElement("div");
     searchDiv.classList.add("w-50");
     const text = `
-       
-        <button onclick="loadNews(${button.category_id})" class="btn btn-outline-secondary mt-5">${button.category_name}</button>
+        <button onclick="loadNews(${button.category_id})" class="btn btn-outline-secondary mt-5">${button.category_name}</button> 
     `;
+    toggoleSpinner(true);
     searchDiv.innerHTML = text;
     searchBtn.appendChild(searchDiv);
   });
@@ -63,6 +72,7 @@ const displayNews = (news) => {
         `;
     newsContainer.appendChild(newsDiv);
   });
+  toggoleSpinner(false);
 };
 
 const loadNewsDetails = async (id) => {
