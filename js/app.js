@@ -1,16 +1,11 @@
 const loadButtons = async () => {
   const url = `https://openapi.programming-hero.com/api/news/categories`;
-  const res = await fetch(url);
-  const data = await res.json();
-  displayButtons(data.data.news_category);
-};
-
-const toggoleSpinner = (isLoading) => {
-  const loaderSection = document.getElementById("loader");
-  if (isLoading) {
-    loaderSection.classList.remove("d-none");
-  } else {
-    loaderSection.classList.add("d-none");
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+    displayButtons(data.data.news_category);
+  } catch (error) {
+    console.log(error);
   }
 };
 
@@ -22,7 +17,7 @@ const displayButtons = (buttons) => {
     const searchDiv = document.createElement("div");
     searchDiv.classList.add("w-50");
     const text = `
-        <button onclick="loadNews(${button.category_id})" class="btn btn-outline-secondary mt-5">${button.category_name}</button> 
+        <button onclick="loadNews(${button.category_id})" class=" btn btn-outline-secondary mt-5">${button.category_name}</button> 
     `;
     toggoleSpinner(true);
     searchDiv.innerHTML = text;
@@ -31,15 +26,28 @@ const displayButtons = (buttons) => {
 };
 loadButtons();
 
+const toggoleSpinner = (isLoading) => {
+  const loaderSection = document.getElementById("loader");
+  if (isLoading) {
+    loaderSection.classList.remove("d-none");
+  } else {
+    loaderSection.classList.add("d-none");
+  }
+};
+
 const loadNews = async (id) => {
   const url = `https://openapi.programming-hero.com/api/news/category/0${id}`;
-  const res = await fetch(url);
-  const data = await res.json();
-  displayNews(data.data);
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+    displayNews(data.data);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const displayNews = (news) => {
-  console.log(news);
+  // console.log(news.length);
   const newsContainer = document.getElementById("news-container");
   newsContainer.innerHTML = "";
   const noNewsMsg = document.getElementById("no-news-msg");
@@ -49,9 +57,11 @@ const displayNews = (news) => {
     noNewsMsg.classList.add("d-none");
   }
   news.forEach((newses) => {
+    console.log(newses);
     const newsDiv = document.createElement("div");
     newsDiv.classList.add("col");
     newsDiv.innerHTML = `
+    
         <div class="card">
         <img src="${newses.image_url}" class="card-img-top" alt="...">
         <div class="card-body">
@@ -87,18 +97,22 @@ const displayNews = (news) => {
 
 const loadNewsDetails = async (id) => {
   const url = ` https://openapi.programming-hero.com/api/news/${id}`;
-  const res = await fetch(url);
-  const data = await res.json();
-  displayNewsDetails(data.data[0]);
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+    displayNewsDetails(data.data[0]);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const displayNewsDetails = (details) => {
-  console.log(details);
+  // console.log(details);
   const modalTitle = document.getElementById("exampleModalLabel");
   modalTitle.innerText = details.title;
   const detailImg = document.getElementById("detail-img");
   detailImg.innerHTML = `
-  <img src="${details.author.img}" class="img-fluid">
+  <img src="${details.author.img}" class="w-100">
   <h5>Author Name:${
     details.author.name ? details.author.name : "No Name Available"
   }</h5>
