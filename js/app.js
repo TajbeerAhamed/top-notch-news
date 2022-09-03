@@ -75,6 +75,13 @@ const loadNewsDetails = async (id) => {
 const displayNewsDetails = (details) => {
   console.log(details);
   const modalTitle = document.getElementById("exampleModalLabel");
-  modalTitle.innerText = details.author.name;
-  const detailImg = document.getElementById("");
+  modalTitle.innerText = details.title;
+  const detailImg = document.getElementById("detail-img");
+  detailImg.innerHTML = `
+  <img src="${details.author.img}" class="img-fluid">
+  <h5>Author Name:${
+    details.author.name ? details.author.name : "No Name Available"
+  }</h5>
+  <p>Publish Date:${details.author.published_date}</p>
+  `;
 };
