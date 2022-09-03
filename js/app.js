@@ -15,7 +15,7 @@ const toggoleSpinner = (isLoading) => {
 };
 
 const displayButtons = (buttons) => {
-  // console.log(buttons)
+  // console.log(buttons);
   buttons.forEach((button) => {
     // console.log(button);
     const searchBtn = document.getElementById("search-btn");
@@ -39,9 +39,15 @@ const loadNews = async (id) => {
 };
 
 const displayNews = (news) => {
-  // console.log(news);
+  console.log(news);
   const newsContainer = document.getElementById("news-container");
   newsContainer.innerHTML = "";
+  const noNewsMsg = document.getElementById("no-news-msg");
+  if (news.length === 0) {
+    noNewsMsg.classList.remove("d-none");
+  } else {
+    noNewsMsg.classList.add("d-none");
+  }
   news.forEach((newses) => {
     const newsDiv = document.createElement("div");
     newsDiv.classList.add("col");
@@ -57,10 +63,14 @@ const displayNews = (news) => {
             }</p>
             <div class="d-flex">
             <img class="rounded-circle me-4" src="${
-              newses.thumbnail_url
+              newses.author.img
             }" alt="" width="30" height="30">
-            <p class="me-4">${newses.author.name}</p>
-            <p>Total View :${newses.total_view}<p>
+            <p class="me-4">${
+              newses.author.name ? newses.author.name : "no name Found"
+            }</p>
+            <p>Total View :${
+              newses.total_view ? newses.total_view : "No data found"
+            }<p>
            
             </div>
             <button onclick="loadNewsDetails('${
@@ -93,5 +103,6 @@ const displayNewsDetails = (details) => {
     details.author.name ? details.author.name : "No Name Available"
   }</h5>
   <p>Publish Date:${details.author.published_date}</p>
+  <p>Total View :${details.total_view ? details.total_view : "No data found"}<p>
   `;
 };
