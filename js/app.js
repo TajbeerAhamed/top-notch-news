@@ -30,7 +30,7 @@ const loadNews = async (id) => {
 };
 
 const displayNews = (news) => {
-  console.log(news);
+  // console.log(news);
   const newsContainer = document.getElementById("news-container");
   newsContainer.innerHTML = "";
   news.forEach((newses) => {
@@ -52,11 +52,29 @@ const displayNews = (news) => {
             }" alt="" width="30" height="30">
             <p class="me-4">${newses.author.name}</p>
             <p>Total View :${newses.total_view}<p>
+           
             </div>
+            <button onclick="loadNewsDetails('${
+              newses._id
+            }')" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Details</button>
 
         </div>
     </div>
         `;
     newsContainer.appendChild(newsDiv);
   });
+};
+
+const loadNewsDetails = async (id) => {
+  const url = ` https://openapi.programming-hero.com/api/news/${id}`;
+  const res = await fetch(url);
+  const data = await res.json();
+  displayNewsDetails(data.data[0]);
+};
+
+const displayNewsDetails = (details) => {
+  console.log(details);
+  const modalTitle = document.getElementById("exampleModalLabel");
+  modalTitle.innerText = details.author.name;
+  const detailImg = document.getElementById("");
 };
