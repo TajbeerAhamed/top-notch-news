@@ -1,8 +1,13 @@
+let buttons=[]
+
 const loadButtons = async () => {
   const url = `https://openapi.programming-hero.com/api/news/categories`;
   try {
+    
     const res = await fetch(url);
     const data = await res.json();
+    // console.log(data);
+    buttons=data.data.news_category
     displayButtons(data.data.news_category);
   } catch (error) {
     console.log(error);
@@ -26,6 +31,14 @@ const displayButtons = (buttons) => {
 };
 loadButtons();
 
+const searchName=(id)=>{
+// console.log(id,buttons);
+const name=buttons.find(button =>button.category_id==id)
+return name.category_name
+// console.log(name);
+
+}
+
 const toggoleSpinner = (isLoading) => {
   const loaderSection = document.getElementById("loader");
   if (isLoading) {
@@ -37,18 +50,26 @@ const toggoleSpinner = (isLoading) => {
 
 const loadNews = async (id) => {
   toggoleSpinner(true);
+  const name=searchName(id)
+  // console.log(name);
+  
   const url = `https://openapi.programming-hero.com/api/news/category/0${id}`;
   try {
     const res = await fetch(url);
     const data = await res.json();
-    displayNews(data.data);
+    displayNews(data.data,name);
   } catch (error) {
     console.log(error);
   }
 };
 
-const displayNews = (news) => {
-  console.log(news);
+const displayNews = (news,name) => {
+ 
+  console.log(name);
+    news.sort((a, b) => {
+      return a.total_view - b.total_view;
+    }).reverse()
+  
   const newsNumber = document.getElementById("news-number");
 
   // console.log(news.length);
@@ -61,11 +82,11 @@ const displayNews = (news) => {
     `;
   } else {
     newsNumber.innerHTML = `
-    <h3 class="text-success text-center">${news.length} items found for category</h3>
+    <h3 class="text-success text-center">${news.length} items found for category ${name}</h3>
     `;
   }
   news.forEach((newses) => {
-    console.log(newses);
+    // console.log(newses);
     const newsDiv = document.createElement("div");
     newsDiv.classList.add("col");
     newsDiv.innerHTML = `
