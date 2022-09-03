@@ -19,7 +19,7 @@ const displayButtons = (buttons) => {
     const text = `
         <button onclick="loadNews(${button.category_id})" class=" btn btn-outline-secondary mt-5">${button.category_name}</button> 
     `;
-    toggoleSpinner(true);
+
     searchDiv.innerHTML = text;
     searchBtn.appendChild(searchDiv);
   });
@@ -36,6 +36,7 @@ const toggoleSpinner = (isLoading) => {
 };
 
 const loadNews = async (id) => {
+  toggoleSpinner(true);
   const url = `https://openapi.programming-hero.com/api/news/category/0${id}`;
   try {
     const res = await fetch(url);
@@ -47,14 +48,21 @@ const loadNews = async (id) => {
 };
 
 const displayNews = (news) => {
+  console.log(news);
+  const newsNumber = document.getElementById("news-number");
+
   // console.log(news.length);
   const newsContainer = document.getElementById("news-container");
   newsContainer.innerHTML = "";
-  const noNewsMsg = document.getElementById("no-news-msg");
+
   if (news.length === 0) {
-    noNewsMsg.classList.remove("d-none");
+    newsNumber.innerHTML = `
+    <h3 class="text-warning text-center">No news Found.Please try a new One.</h3>
+    `;
   } else {
-    noNewsMsg.classList.add("d-none");
+    newsNumber.innerHTML = `
+    <h3 class="text-success text-center">${news.length} items found for category</h3>
+    `;
   }
   news.forEach((newses) => {
     console.log(newses);
@@ -83,10 +91,10 @@ const displayNews = (news) => {
             }<p>
            
             </div>
-            <button onclick="loadNewsDetails('${
+            <div class="text-center"><button onclick="loadNewsDetails('${
               newses._id
-            }')" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Details</button>
-
+            }')" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">see Details</button>
+</div>
         </div>
     </div>
         `;
@@ -113,10 +121,12 @@ const displayNewsDetails = (details) => {
   const detailImg = document.getElementById("detail-img");
   detailImg.innerHTML = `
   <img src="${details.author.img}" class="w-100">
-  <h5>Author Name:${
+  <h4 class="text-center">Author Name: ${
     details.author.name ? details.author.name : "No Name Available"
-  }</h5>
-  <p>Publish Date:${details.author.published_date}</p>
-  <p>Total View :${details.total_view ? details.total_view : "No data found"}<p>
+  }</h4>
+  <h6 class="text-center">Publish Date:${details.author.published_date}</h6>
+  <h6 class="text-center">Total View :${
+    details.total_view ? details.total_view : "No data found"
+  }<h6>
   `;
 };
